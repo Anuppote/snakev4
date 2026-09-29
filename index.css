@@ -9,9 +9,9 @@
   --panel: rgba(255, 255, 255, 0.05);
   --stroke: rgba(255, 255, 255, 0.12);
   --gap: clamp(8px, 1.8vh, 14px);
-  --kgap: clamp(12px, 3.4vw, 18px);
+  --kgap: clamp(6px, 1.6vw, 9px);
   --pad: clamp(10px, 2.5vw, 18px);
-  --key: clamp(56px, 16vw, 74px);
+  --key: clamp(54px, 15.5vw, 70px);
   /* Fixed chrome heights, so the board can reserve exactly the right space. */
   --chrome-top: 34px;
   --chrome-speed: 38px;
@@ -145,7 +145,6 @@ body {
    the viewport height guarantees a square that always fits, no scrolling. */
 .board {
   --dpad-h: calc(var(--key) * 3 + var(--kgap) * 2);
-  position: relative;
   flex: 0 0 auto;
   width: min(
     100%,
@@ -317,44 +316,42 @@ body {
   outline-offset: 2px;
 }
 
-/* Play is a floating bar on the board, not a button in the middle of the
-   D-pad. The centre of a cross sits exactly where the thumb pivots, which
-   is the hardest spot to reach one-handed, and it read as clutter.
-   index.js disables this button while playing, so it fades out entirely. */
+/* Play sits in the D-pad centre: saves a full row of vertical space on a
+   phone and lands right under the thumb. index.js rewrites this button's
+   text to "Play Again", so it must stay text-only. */
 .play {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(10px, 3.5%, 20px);
-  transform: translateX(-50%);
-  min-width: 56%;
-  max-width: 78%;
-  padding: clamp(12px, 3.4%, 16px) 20px;
+  grid-area: mid;
+  width: calc(var(--key) * 1.12);
+  height: calc(var(--key) * 1.12);
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
   font-family: inherit;
-  font-size: clamp(13px, 3.6vw, 16px);
+  font-size: clamp(9px, 2.5vw, 11px);
   font-weight: 800;
-  letter-spacing: 0.14em;
-  line-height: 1.1;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
   text-align: center;
   text-transform: uppercase;
-  white-space: nowrap;
   color: #04140a;
   border: none;
-  border-radius: 99px;
+  border-radius: 50%;
   background: linear-gradient(120deg, var(--green), var(--green-deep));
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 24px rgba(46, 232, 107, 0.35);
+  box-shadow: 0 6px 20px rgba(46, 232, 107, 0.34);
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform 0.09s ease, opacity 0.22s ease, filter 0.18s ease;
+  transition: transform 0.09s ease, filter 0.18s ease, box-shadow 0.18s ease;
 }
 .play:hover {
   filter: brightness(1.07);
 }
 .play:active {
-  transform: translateX(-50%) scale(0.96);
+  transform: scale(0.93);
 }
 .play:disabled {
-  opacity: 0;
-  pointer-events: none;
+  cursor: default;
+  filter: grayscale(0.8) brightness(0.55);
+  box-shadow: none;
 }
 .play:focus-visible {
   outline: 2px solid #fff;
@@ -402,13 +399,6 @@ body {
 @media (max-height: 600px) {
   :root {
     --key: clamp(46px, 12.5vw, 56px);
-  }
-}
-
-@media (max-height: 460px) {
-  :root {
-    --key: clamp(40px, 9vw, 48px);
-    --kgap: clamp(8px, 2.2vw, 12px);
   }
 }
 
