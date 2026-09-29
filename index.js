@@ -5,15 +5,37 @@ let isGoingUp = false;
 let speed;
 let lost = false;
 let currentScore = 0;
-speed = prompt("Welcome To Snake Game!! Set snake speed between 1 to 10");
-if (speed >= 1 && speed <= 10) {
-  speed = 550 - speed * 50;
-} else {
-  alert("select number between 1 to 10 or default speed is 7");
-  speed = 200;
+// Speed is now read from the on-page slider instead of the old prompt().
+// The mapping is unchanged (550 - n * 50) and the slider defaults to 7,
+// which yields the exact 200ms default the old fallback used.
+let speedSlider = document.querySelector("#speedRange");
+let speedValue = document.querySelector("#speedValue");
+let speedReapply = null;
+let id = null;
+speed = 550 - (speedSlider ? Number(speedSlider.value) : 7) * 50;
+if (speedValue) {
+  speedValue.textContent = speedSlider ? speedSlider.value : 7;
+}
+if (speedSlider) {
+  speedSlider.addEventListener("input", function () {
+    speed = 550 - Number(speedSlider.value) * 50;
+    if (speedValue) {
+      speedValue.textContent = speedSlider.value;
+    }
+    // Apply live, but never resurrect a finished game.
+    if (speedReapply && !lost) {
+      speedReapply();
+    }
+  });
 }
 let impact = new Audio("impact1.mp3");
 let eat = new Audio("eat.mp3");
+// navigator.vibrate does not exist on desktop browsers, so guard the call.
+function buzz(ms) {
+  if (typeof navigator.vibrate === "function") {
+    navigator.vibrate(ms);
+  }
+}
 let highScore = 0;
 
 let touched = false;
@@ -35,31 +57,38 @@ document.querySelector(".btn1").addEventListener("click", function () {
   downPressed = false;
   leftPressed = false;
   upPressed = true;
-  window.navigator.vibrate(30);
+  buzz(30);
 });
 document.querySelector(".btn2").addEventListener("click", function () {
   rightPressed = false;
   downPressed = false;
   leftPressed = true;
   upPressed = false;
-  window.navigator.vibrate(30);
+  buzz(30);
 });
 document.querySelector(".btn3").addEventListener("click", function () {
   rightPressed = true;
   downPressed = false;
   leftPressed = false;
   upPressed = false;
-  window.navigator.vibrate(30);
+  buzz(30);
 });
 document.querySelector(".btn4").addEventListener("click", function () {
   rightPressed = false;
   downPressed = true;
   leftPressed = false;
   upPressed = false;
-  window.navigator.vibrate(30);
+  buzz(30);
 });
 let canvas = document.querySelector("#myCanvas");
 let context = canvas.getContext("2d");
+// Retina: the logical grid stays 362x362 so every hardcoded bound in the
+// engine (r/b != 341, Math.random() * 341) remains valid. Only the backing
+// store and the transform change, so existing draw coordinates still line up.
+let pixelRatio = Math.min(window.devicePixelRatio || 1, 3);
+canvas.width = 362 * pixelRatio;
+canvas.height = 362 * pixelRatio;
+context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 context.fillStyle = "#111d5e";
 context.fillRect(0, 0, 362, 362);
 document.addEventListener("keydown", keypressed);
@@ -107,7 +136,7 @@ function lose() {
   context.font = "30px Comic Sans MS";
   context.fillStyle = "#fecd1a";
   context.textAlign = "center";
-  context.fillText("You Lose", canvas.width / 2, canvas.height / 2);
+  context.fillText("You Lose", 362 / 2, 362 / 2);
   document.querySelector(".btnPlay").disabled = false;
   document.querySelector(".btnPlay").innerHTML = "Play Again";
   impact.play();
@@ -149,7 +178,12 @@ function playGame() {
   }
 
   document.querySelector(".btnPlay").disabled = "true";
-  let id = setInterval(move, speed);
+  id = setInterval(move, speed);
+  // Hook so the on-page speed slider can re-arm the loop live, no restart.
+  speedReapply = function () {
+    clearInterval(id);
+    id = setInterval(move, speed);
+  };
   function move() {
     for (let i = 0; i < snakeBody.length; i++) {
       if (i > 0) {

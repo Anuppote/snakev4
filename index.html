@@ -1,92 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script
-      src="https://kit.fontawesome.com/642498d38d.js"
-      crossorigin="anonymous"
-    ></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Redressed&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#05070f" />
+    <title>Snake V3</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="index.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Anup's First Game</title>
   </head>
   <body>
-    <div class="container">
-      <button type="button" class="btn btn-warning btn-sm btnPlay">PLAY</button>
-    </div>
-    <div class="secondDiv">
-      <div class="scoreDiv">
-        <i class="fas fa-apple-alt"></i>
+    <div class="app">
+      <header class="topbar">
+        <h1 class="title">
+          <span class="title__mark" aria-hidden="true"></span>
+          Snake <span class="title__ver">V3</span>
+        </h1>
+        <p class="tagline">Eat &middot; Grow &middot; Survive</p>
+      </header>
+
+      <section class="stats" aria-label="Scores">
+        <div class="stat">
+          <span class="stat__label"><i class="dot dot--green"></i>Score</span>
+          <span class="stat__value score">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label"><i class="dot dot--gold"></i>Best</span>
+          <span class="stat__value highScore">0</span>
+        </div>
+      </section>
+
+      <div class="board">
+        <canvas id="myCanvas" width="362" height="362" aria-label="Snake game board"></canvas>
       </div>
-      <div class="score">0</div>
 
-      <div class="highScoreDiv">Highscore</div>
-      <div class="highScore">0</div>
-    </div>
+      <section class="controls" aria-label="Game controls">
+        <div class="speed">
+          <label class="speed__label" for="speedRange">Speed</label>
+          <input
+            id="speedRange"
+            class="speed__range"
+            type="range"
+            min="1"
+            max="10"
+            step="1"
+            value="7"
+          />
+          <output id="speedValue" class="speed__value" for="speedRange">7</output>
+        </div>
 
-    <canvas id="myCanvas" width="362" height="362"></canvas>
+        <button type="button" class="play btnPlay">PLAY</button>
 
-    <div class="container-fluid" style="margin: 10px auto 10px auto">
-      <button
-        type="button"
-        class="btn btn-primary btn-sm btn1"
-        style="width: 150px"
-      >
-        Turn Up
-      </button>
-    </div>
-    <div class="container-fluid">
-      <button
-        type="button"
-        class="btn btn-primary btn-sm btn2"
-        style="margin-right: 10px; width: 150px"
-      >
-        Turn Left
-      </button>
-      <button
-        type="button"
-        class="btn btn-primary btn-sm btn3"
-        style="margin-left: 10px; width: 150px"
-      >
-        Turn Right
-      </button>
-    </div>
-    <div class="container-fluid" style="margin: 10px auto 10px auto">
-      <button
-        type="button"
-        class="btn btn-primary btn-sm btn4"
-        style="width: 150px"
-      >
-        Turn Down
-      </button>
+        <div class="dpad" role="group" aria-label="Direction pad">
+          <button type="button" class="pad__btn pad__btn--up btn1" aria-label="Turn up">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 15l6-6 6 6" /></svg>
+          </button>
+          <button type="button" class="pad__btn pad__btn--left btn2" aria-label="Turn left">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6" /></svg>
+          </button>
+          <span class="pad__mid" aria-hidden="true"></span>
+          <button type="button" class="pad__btn pad__btn--right btn3" aria-label="Turn right">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" /></svg>
+          </button>
+          <button type="button" class="pad__btn pad__btn--down btn4" aria-label="Turn down">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+          </button>
+        </div>
+      </section>
+
+      <footer class="hints">
+        <kbd>&uarr;</kbd><kbd>&larr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or
+        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to steer
+      </footer>
     </div>
 
     <script src="index.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>
