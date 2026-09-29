@@ -7,10 +7,10 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
     <meta name="theme-color" content="#05070f" />
-    <title>Snake V3</title>
+    <title>Snake V4</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="index.css" />
@@ -20,64 +20,52 @@
       <header class="topbar">
         <h1 class="title">
           <span class="title__mark" aria-hidden="true"></span>
-          Snake <span class="title__ver">V3</span>
+          Snake<span class="title__ver">V4</span>
         </h1>
-        <p class="tagline">Eat &middot; Grow &middot; Survive</p>
+        <div class="scores">
+          <span class="pill"><i class="dot dot--green"></i><b class="score">0</b></span>
+          <span class="pill"><i class="dot dot--gold"></i><b class="highScore">0</b></span>
+        </div>
       </header>
-
-      <section class="stats" aria-label="Scores">
-        <div class="stat">
-          <span class="stat__label"><i class="dot dot--green"></i>Score</span>
-          <span class="stat__value score">0</span>
-        </div>
-        <div class="stat">
-          <span class="stat__label"><i class="dot dot--gold"></i>Best</span>
-          <span class="stat__value highScore">0</span>
-        </div>
-      </section>
 
       <div class="board">
         <canvas id="myCanvas" width="362" height="362" aria-label="Snake game board"></canvas>
       </div>
 
-      <section class="controls" aria-label="Game controls">
-        <div class="speed">
-          <label class="speed__label" for="speedRange">Speed</label>
-          <input
-            id="speedRange"
-            class="speed__range"
-            type="range"
-            min="1"
-            max="10"
-            step="1"
-            value="7"
-          />
-          <output id="speedValue" class="speed__value" for="speedRange">7</output>
-        </div>
+      <div class="speed">
+        <label class="speed__label" for="speedRange">Speed</label>
+        <input
+          id="speedRange"
+          class="speed__range"
+          type="range"
+          min="1"
+          max="10"
+          step="1"
+          value="7"
+        />
+        <output id="speedValue" class="speed__value" for="speedRange">7</output>
+      </div>
 
+      <div class="dpad" role="group" aria-label="Controls">
+        <button type="button" class="pad__btn pad__btn--up btn1" aria-label="Up">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 15l6-6 6 6" /></svg>
+        </button>
+        <button type="button" class="pad__btn pad__btn--left btn2" aria-label="Left">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6" /></svg>
+        </button>
         <button type="button" class="play btnPlay">PLAY</button>
+        <button type="button" class="pad__btn pad__btn--right btn3" aria-label="Right">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" /></svg>
+        </button>
+        <button type="button" class="pad__btn pad__btn--down btn4" aria-label="Down">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+      </div>
 
-        <div class="dpad" role="group" aria-label="Direction pad">
-          <button type="button" class="pad__btn pad__btn--up btn1" aria-label="Turn up">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 15l6-6 6 6" /></svg>
-          </button>
-          <button type="button" class="pad__btn pad__btn--left btn2" aria-label="Turn left">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6" /></svg>
-          </button>
-          <span class="pad__mid" aria-hidden="true"></span>
-          <button type="button" class="pad__btn pad__btn--right btn3" aria-label="Turn right">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" /></svg>
-          </button>
-          <button type="button" class="pad__btn pad__btn--down btn4" aria-label="Turn down">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
-          </button>
-        </div>
-      </section>
-
-      <footer class="hints">
+      <p class="hints">
         <kbd>&uarr;</kbd><kbd>&larr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> or
-        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to steer
-      </footer>
+        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+      </p>
     </div>
 
     <script src="index.js"></script>

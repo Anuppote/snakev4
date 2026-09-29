@@ -1,4 +1,7 @@
-let isGoingRight = true;
+// The snake has no body yet at spawn, so it must not be treated as already
+// travelling right: the `leftPressed && !isGoingRight` guard would otherwise
+// reject LEFT as the very first move.
+let isGoingRight = false;
 let isGoingLeft = false;
 let isGoingDown = false;
 let isGoingUp = false;
@@ -44,13 +47,17 @@ let rightPressed = true;
 let downPressed = false;
 let leftPressed = false;
 let upPressed = false;
-let snakeBody = [{ x: 1, y: 1 }];
+// Spawn in the centre, not the top-left corner. At (1,1) the engine's
+// `r != 1` / `b != 1` wall guards made UP and LEFT instantly fatal on the
+// first frame, so 3 of the 4 D-pad buttons were unusable at spawn.
+// 181 = 1 + 20*9, the same offset grid the food spawns on.
+let snakeBody = [{ x: 181, y: 181 }];
 
 let foodIsEaten = true;
 
 let randomX, randomY;
-let r = 1,
-  b = 1;
+let r = 181,
+  b = 181;
 document.querySelector(".btnPlay").addEventListener("click", playGame);
 document.querySelector(".btn1").addEventListener("click", function () {
   rightPressed = false;
@@ -143,14 +150,14 @@ function lose() {
   while (snakeBody.length > 0) {
     snakeBody.pop();
   }
-  snakeBody = [{ x: 1, y: 1 }];
-  isGoingRight = true;
+  snakeBody = [{ x: 181, y: 181 }];
+  isGoingRight = false;
   isGoingLeft = false;
   isGoingDown = false;
   isGoingUp = false;
   touched = false;
-  r = 1;
-  b = 1;
+  r = 181;
+  b = 181;
   rightPressed = true;
   downPressed = false;
   leftPressed = false;
